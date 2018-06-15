@@ -1,0 +1,10 @@
+Package: MeMoBootR
+Title: Mediation-Moderation with Bootstrapping in R
+Version: 0.0.0.1000
+Authors@R: person("Erin", "Buchanan", email = "buchananlab@gmail.com", role = c("aut", "cre"))
+Description: This package does some mediation stuff at the moment and is being built. 
+Depends: R (>= 3.0.0), boot
+License: LGPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
