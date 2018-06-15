@@ -62,3 +62,18 @@ saved$boot.results
 saved$boot.ci
 
 #indirect = -0.72, SE = 0.52, 95% CI[-1.81, 0.22]
+
+####power####
+library(pwr)
+##power runs on cohen's f - not to be confused with anova f. 
+##take the R squared to convert
+R2 =  .06
+feta = R2 / (1-R2)
+
+#u is df model, which is number of predictors 
+#v is df error, but we are trying to figure out 
+#sample size so we leave this one blank. 
+#f2 is cohen f squared 
+
+pwr.f2.test(u = 4, v = NULL, f2 = feta, sig.level = .05, power = .80)
+#remember that you need to add u + v to get final sample size 
