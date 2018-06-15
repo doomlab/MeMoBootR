@@ -37,6 +37,18 @@ summary(saved$model1) #c path
 summary(saved$model2) #a path
 summary(saved$model3) #b and c' path
 
+#X predicts Y total effects
+#c path b = -1.52, t(28) = -3.64, p = .001
+#F(3,28) = 46.53, p < .001, R2 = .83
+
+#X predicts M
+#a path b = 32.97, t(28) = 6.64, p < .001
+
+#X predicts Y with M direct effects
+#c' path b = -0.81, t(27) = -1.23, p = .231
+#M predicts Y with X 
+#b path b = -0.02, t(27) = -1.38, p = .179
+
 #total, direct, indirect effects
 saved$total.effect; saved$direct.effect; saved$indirect.effect
 
@@ -48,3 +60,5 @@ saved$boot.results
 
 #bootstrapped CI
 saved$boot.ci
+
+#indirect = -0.72, SE = 0.52, 95% CI[-1.81, 0.22]
