@@ -21,8 +21,7 @@ datascreen = function(eq, df, with_out = T) {
   
   output = lm(eq, data = df)
   
-  columnstopull = write.table(matrix(as.character(attr(output$terms, "variables")[-1]),nrow=1), sep=",",
-                              row.names=FALSE, col.names=FALSE)
+  columnstopull = variable.names(output)[-1]
   
   ##Mahal
   mahal = mahalanobis(df[ ,columnstopull], 
