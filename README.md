@@ -16,3 +16,5 @@ To install the package take the following steps:
 4) Enjoy mediation and moderation complete with data screening. 
 
 More tutorials, details, and other information added as I go. 
+
+Many thanks to KD Valentine for the fantastic name suggestion.
