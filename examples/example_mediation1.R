@@ -9,7 +9,7 @@ library(MeMoBootR)
 saved = mediation1(y = "mpg", #DV
                    x = "cyl", #IV
                    m = "hp",  #Mediator
-                   cvs = c("drat", "gear"), #Any covariates
+                   #cvs = c("drat", "gear"), #Any covariates
                    df = mtcars, #Dataframe
                    with_out = T, #Not required but can change to F for no outliers
                    nboot = 1000, #Number of bootstraps

@@ -21,11 +21,14 @@ datascreen = function(eq, df, with_out = T) {
   
   output = lm(eq, data = df)
   
+  columnstopull = write.table(matrix(as.character(attr(output$terms, "variables")[-1]),nrow=1), sep=",",
+                              row.names=FALSE, col.names=FALSE)
+  
   ##Mahal
-  mahal = mahalanobis(df[ , dput(as.character(attr(output$terms, "variables")[-1]))], 
-                      colMeans(df[ , dput(as.character(attr(output$terms, "variables")[-1]))]), 
-                      cov(df[ , dput(as.character(attr(output$terms, "variables")[-1]))]))
-  cutmahal = qchisq(1-.001, ncol(df[ , dput(as.character(attr(output$terms, "variables")[-1]))]))
+  mahal = mahalanobis(df[ ,columnstopull], 
+                      colMeans(df[ , columnstopull]), 
+                      cov(df[ , columnstopull]))
+  cutmahal = qchisq(1-.001, ncol(df[ , columnstopull]))
   badmahal = as.numeric(mahal > cutmahal)
   
   ##leverage
