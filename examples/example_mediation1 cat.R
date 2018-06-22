@@ -41,12 +41,22 @@ summary(saved$model2) #a path
 summary(saved$model3) #b and c' path
 
 #X predicts Y total effects
+#4v6 b = -6.92, t(29) = -4.44, p < .001
+#4v8 b = -11.56, t(29) = -8.91, p < .001
+#interpretation difference between groups (X) on Y
+tapply(mtcars$mpg, mtcars$cyl, mean)
 
 #X predicts M
+#4v6 b = 0.83, t(29) = 2.73, p = .011
+#4v8 b = 1.71, t(29) = 6.75, p < .001
+tapply(mtcars$wt, mtcars$cyl,mean)
 
 #X predicts Y with M direct effects
+#4v6 b = -4.26, t(28) = -3.07, p = .005
+#4v8 b = -6.07, t(28) = -3.67, p < .001
 
 #M predicts Y with X
+#b = -3.21, t(28) = -4.25, p < .001
 
 #total, direct, indirect effects
 saved$total.effect; saved$direct.effect; saved$indirect.effect
@@ -54,11 +64,21 @@ saved$total.effect; saved$direct.effect; saved$indirect.effect
 #Sobel test
 saved$z.score; saved$p.value
 
+#Z = -2.12, p = .034
+#Z = -3.45, p < .001
+
 #bootstrapped indirect
 saved$boot.results
 
 #bootstrapped CI
 saved$boot.ci
+
+#indirect = -3.54, 95% CI[-6.66, -0.26] does cross zero,
+#so we would consider this mediation
+#indirect = -10.40, 95% CI[-17.20, -3.35]
+
+#diagram
+saved$diagram
 
 ####power####
 library(pwr)
