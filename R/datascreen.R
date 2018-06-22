@@ -14,6 +14,9 @@
 #' be found. Note that only the columns used in the analysis will be screened.
 #' @param with_out A logical value where you want to keep the outliers in
 #' the data screening \code{TRUE} or exclude them from the data screening \code{FALSE}.
+#' @param xcat This variable tells the function if X is categorical variable.
+#' If so, it will ignore Mahalanobis distance calculation, which cannot
+#' be done on categorical variables.
 #' @keywords mediation, moderation, regression, data screening
 #' @export
 #' @examples
@@ -21,18 +24,20 @@
 #'            df = mtcars, with_out = TRUE)
 #' @export
 
-datascreen = function(eq, df, with_out = T) {
+datascreen = function(eq, df, with_out = T, xcat = F) {
 
   output = lm(eq, data = df)
 
   columnstopull = variable.names(output)[-1]
 
+  if (xcat == F){ #only run mahalanobis if x is continuous
   ##Mahal
   mahal = mahalanobis(df[ ,columnstopull],
                       colMeans(df[ , columnstopull]),
                       cov(df[ , columnstopull]))
   cutmahal = qchisq(1-.001, ncol(df[ , columnstopull]))
   badmahal = as.numeric(mahal > cutmahal)
+  }
 
   ##leverage
   k = length(output$coefficients)-1 ##number of IVs
@@ -45,10 +50,17 @@ datascreen = function(eq, df, with_out = T) {
   cutcooks = 4 / (nrow(df) - k - 1)
   badcooks = as.numeric(cooks > cutcooks)
 
+  if (xcat == F) {
   ##totaloutliers
   totalout = badmahal + badleverage + badcooks
-
+  ##make new data frame to return
   df2 = cbind(df, badmahal, badleverage, badcooks, totalout)
+  } else {
+    ##total outliers
+    totalout = badleverage + badcooks
+    ##make a new data frame to return
+    df2 = cbind(df, badleverage, badcooks, totalout)
+    }
 
   #run with or without outliers
   if (with_out == F) { finaldata = subset(df2, totalout < 2) } else { finaldata = df2 }

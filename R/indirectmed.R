@@ -1,4 +1,4 @@
-#' Indirect Effect for Simple Mediation
+#' Indirect Effect for Mediation
 #'
 #' This function runs a simple mediation model to calculate
 #' the indirect effect, which will be used for bootstrapping
@@ -18,18 +18,37 @@
 #' @keywords mediation, moderation, regression, indirect effect
 #' @export
 #' @examples
-#' indirectm1("disp ~ mpg", "cyl ~ mpg + disp", mtcars)
+#' indirectmed("disp ~ mpg", "cyl ~ mpg + disp", mtcars)
 #' @export
 
-indirectm1 = function(formula2, formula3, df, random) {
+indirectmed = function(formula2, formula3, x, df, random) {
   d = df[random, ] #randomize by row
+
+  #figure out x categorical
+  if (is.factor(x)){
+    xcat = T
+    levelsx = paste(x, levels(df[, x])[-1], sep = "")
+    }
+
+  #run the models
   model2 = lm(formula2, data = d)
   model3 = lm(formula3, data = d)
-  a = coef(model2)[2]
-  b = coef(model3)[3]
+
+  if (xcat == F) { #run this if X is continuous
+  a = coef(model2)[x]
+  b = coef(model3)[x]
   indirect = a*b
+  } else {
+    indirect = NA
+    for (i in 1:length(levelsx)) {
+      a = coef(model2)[levelsx[i]]
+      b = coef(model3)[levelsx[i]]
+      indirect[i] = a*b
+    } #close for loop around x
+  } #close else statement
+
   return(indirect)
 }
 
-#' @rdname indirectm1
+#' @rdname indirectmed
 #' @export

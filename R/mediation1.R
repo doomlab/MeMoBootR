@@ -25,19 +25,27 @@
 #' @export
 #' @examples
 #' mediation1(y = "cyl", x = "mpg", m = "disp",
-#'           cvs = c("drat", "gear"))
+#'           cvs = c("drat", "gear"), df = mtcars)
 #' @export
-
 
 mediation1 = function(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000, conf_level = .95) {
 
   require(boot)
 
+  #stop if Y is categorical
+  if (is.factor(df[ , y])){stop("Y should not be a categorical variable. Log regression options are coming soon.")}
+
+  #stop if M is categorical
+  if (is.factor(df[ , m])){stop("M should not be a categorial variable.")}
+
+  #figure out if X is categorical
+  if (is.factor(df[ , x])){xcat = TRUE} else {xcat = FALSE}
+
   #first create the full formula for data screening
   allformulas = createformula(y, x, m, cvs)
 
   #then do data screening
-  screen = datascreen(allformulas$eq3, df, with_out)
+  screen = datascreen(allformulas$eq3, df, with_out, xcat)
 
   #take out outlines and create finaldata
   if (with_out == F) { finaldata = subset(screen$fulldata, totalout < 2) } else { finaldata = screen$fulldata }
@@ -46,28 +54,68 @@ mediation1 = function(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000, conf_
   model2 = lm(allformulas$eq2, data = finaldata) #a path
   model3 = lm(allformulas$eq3, data = finaldata) #b c' paths
 
+  if (xcat == F){ #run this with continuous X
   #aroian sobel
-  a = coef(model2)[2]
-  b = coef(model3)[3]
-  SEa = summary(model2)$coefficients[2,2]
-  SEb = summary(model3)$coefficients[3,2]
+  a = coef(model2)[x]
+  b = coef(model3)[m]
+  SEa = summary(model2)$coefficients[x,2]
+  SEb = summary(model3)$coefficients[m,2]
   zscore = (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
   pvalue = pnorm(abs(zscore), lower.tail = F)*2
 
   #reporting
-  total = coef(model1)[2] #c path
-  direct = coef(model3)[2] #c' path
+  total = coef(model1)[x] #c path
+  direct = coef(model3)[x] #c' path
   indirect = a*b
 
+  } else {
+
+    #figure out all the labels for X
+    levelsx = paste(x, levels(df[, x])[-1], sep = "")
+    total = NA; indirect = NA; direct = NA; zscore = NA; pvalue = NA
+
+    #loop over that to figure out sobel and reporting
+    for (i in 1:length(levelsx)){
+
+      #aroian sobel
+      a = coef(model2)[levelsx[i]]
+      b = coef(model3)[m]
+      SEa = summary(model2)$coefficients[levelsx[i],2]
+      SEb = summary(model3)$coefficients[m,2]
+      zscore[i] = (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
+      pvalue[i] = pnorm(abs(zscore[i]), lower.tail = F)*2
+
+      #reporting
+      total[i] = coef(model1)[levelsx[i]] #c path
+      direct[i] = coef(model3)[levelsx[i]] #c' path
+      indirect[i] = a*b
+
+    } #close for loop
+  } #close else x is categorical
+
   bootresults = boot(data = finaldata,
-                     statistic = indirectm1,
+                     statistic = indirectmed,
                      formula2 = allformulas$eq2,
                      formula3 = allformulas$eq3,
+                     x = x,
                      R = nboot)
 
+  if (xcat == F) { #run this if X is continuous
   bootci = boot.ci(bootresults,
                    conf = conf_level,
                    type = "norm")
+  } else {
+    bootci = list()
+    for (i in 1:length(levelsx)){
+      bootci[[i]] = boot.ci(bootresults,
+                          conf = conf_level,
+                          type = "norm",
+                          index = i)
+      names(bootci)[[i]] = levelsx[[i]]
+    } #close for loop
+  } #close else statement
+
+  triangle = draw.med(model1, model2, model3, y, x, m)
 
   return(list("datascreening" = screen,
               "model1" = model1,
@@ -79,7 +127,8 @@ mediation1 = function(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000, conf_
               "z.score" = zscore,
               "p.value" = pvalue,
               "boot.results" = bootresults,
-              "boot.ci" = bootci
+              "boot.ci" = bootci,
+              "diagram" = triangle
   ))
 }
 

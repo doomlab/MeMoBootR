@@ -1,39 +1,76 @@
 #' Simple Mediation Diagrams
 #'
-#' This function returns the code to create a simple mediation triangle.
+#' This function returns the code to create a simple mediation triangle,
+#' as well as the basic diagram using the \code{diagram} library.
 #'
-#' @param y The dependent variable column name from your dataframe.
-#' @param x The independent variable column name from your dataframe. This column
-#' will be treated as X in mediation or moderation models, please see
-#' diagrams online for examples.
-#' @param m The mediator for your model, as this model only includes one mediator.
-#' @param cvs The covariates you would like to include in the model.
-#' Use a \code{c()} concatenated vector to use multiple covariates.
-#' @param df The dataframe where the columns from the formula can be found.
-#' Note that only the columns used in the analysis will be data screened.
-#' @param with_out A logical value where you want to keep the outliers in
-#' model \code{TRUE} or exclude them from the model \code{FALSE}.
-#' @param nboot A numeric value indicating the number of bootstraps you would like to complete.
-#' @param conf_level A numeric value indicating the confidence interval width for the boostrapped confidence interval.
-#' @keywords mediation, moderation, regression, data screening, bootstrapping
+#' @param model1 The saved regression model of \code{y~x} model where X predicts Y.
+#' @param model2 The saved regression model of \code{m~x} model where X predicts M.
+#' @param model3 The saved regression model of \code{y~x+m} model where X and M predict Y.
+#'
+#' @keywords mediation, regression, data screening, bootstrapping, diagram
 #' @export
 #' @examples
-#' mediation1(y = "cyl", x = "mpg", m = "disp",
-#'           cvs = c("drat", "gear"))
+#' draw.med(saved$model1, saved$model2, saved$model3)
+#' Note in this example saved is the name of the model saved from mediation1.
+#' You can include any form of model names that you have saved from \code{lm()}.
+#' You can also type \code{draw.med} in your console to get this code and edit
+#' the diagram parameters to your liking.
 #' @export
 
+draw.med <- function(model1, model2, model3, y, x, m) {
 
-library(diagram)
-data <- c(0, "'.47*'", 0, 0,
-          0, 0, 0, 0, 
-          "'.36*'", "'.33* (.16)'", 0, 0,
-          0, 0, 0, 0)
-M<- matrix (nrow=4, ncol=4, byrow = TRUE, data=data)
-plot<- plotmat(M, #matrix of coefficients rows = to, columns = from 
-               pos=c(1,2,1), #number of elements in each row
-               name= c( "Math self-efficacy","Math ability", "Interest in the math major", "stuff"),
-               #vector of names
-               box.type = "rect", 
-               box.size = 0.12, 
-               box.prop = 0.5,
-               curve=0)
+  require(diagram)
+  #figure out x categorical
+  if (is.factor(x)){
+    xcat = T
+    levelsx = paste(x, levels(df[, x])[-1], sep = "")
+  }
+
+  if (xcat == F) { #run this if X is continuous
+  a = round(coef(model2)[x],2)
+  b = round(coef(model3)[m],2)
+  c = round(coef(model1)[x],2)
+  cprime = round(coef(model3)[x],2)
+  } else {
+    a = NA; c = NA; cprime = NA
+    b = round(coef(model3)[m],2)
+
+    for (i in 1:length(levelsx)) {
+
+      a[i] = round(coef(model2)[levelsx[i]],2)
+      c[i] = round(coef(model1)[levelsx[i]],2)
+      cprime[i] = round(coef(model3)[levelsx[i]],2)
+
+      a[i] = paste(levelsx[i], " = ", a[i], sep = "")
+      c[i] = paste(levelsx[i], " = ", c[i], sep = "")
+      cprime[i] = paste(levelsx[i], " = ", cprime[i], sep = "")
+
+    } #close for loop
+  } #close categorical x loop
+
+  a = paste(a, collapse = " ")
+  a = paste("`", a, "`", sep = "")
+  c = paste(c, collapse = " ")
+  c = paste("`", c, "`", sep = "")
+  cprime = paste(cprime, collapse = " ")
+  cprime = paste("`", cprime, "`", sep = "")
+
+  bvalues = matrix(nrow = 3, ncol = 3, byrow = TRUE,
+                   data = c(0, a, 0,
+                            0, 0, 0,
+                            b, paste(c, " (", cprime, ")", sep = ""), 0))
+  plotmat(bvalues,
+         pos = c(1,2),
+         name = c(m, x, y),
+         box.type = "rect",
+         box.size = 0.12,
+         box.prop = 0.5,
+         curve = 0,
+         shadow.size = 0)
+  triangle = recordPlot()
+
+  return(triangle)
+}
+
+#' @rdname draw.med
+#' @export

@@ -2,7 +2,7 @@
 % Please edit documentation in R/mediation1.R
 \name{mediation1}
 \alias{mediation1}
-\title{mediation1}
+\title{Simple Mediation}
 \usage{
 mediation1(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000,
   conf_level = 0.95)
@@ -10,29 +10,37 @@ mediation1(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000,
 \arguments{
 \item{y}{The dependent variable column name from your dataframe.}
 
-\item{x}{The independent variable column name from your dataframe. This column will be treated as X in mediation or moderation models, please see diagrams online for examples.}
+\item{x}{The independent variable column name from your dataframe. This column
+will be treated as X in mediation or moderation models, please see
+diagrams online for examples.}
 
 \item{m}{The mediator for your model, as this model only includes one mediator.}
 
-\item{cvs}{The covariates you would like to include in the model. Use a `c()` concatenated vector to use multiple covariates.}
+\item{cvs}{The covariates you would like to include in the model.
+Use a \code{c()} concatenated vector to use multiple covariates.}
 
-\item{df}{The dataframe where the columns from the formula can be found. Note that only the columns used in the analysis will be data screened.}
+\item{df}{The dataframe where the columns from the formula can be found.
+Note that only the columns used in the analysis will be data screened.}
 
-\item{with_out}{A logical value where you want to keep the outliers in model `TRUE` or exclude them from the model `FALSE`.}
+\item{with_out}{A logical value where you want to keep the outliers in
+model \code{TRUE} or exclude them from the model \code{FALSE}.}
 
 \item{nboot}{A numeric value indicating the number of bootstraps you would like to complete.}
 
 \item{conf_level}{A numeric value indicating the confidence interval width for the boostrapped confidence interval.}
 }
 \description{
-This function runs a complete simple mediation analysis with one mediator, similiar to model 1 in PROCESS by A. Hayes (2013). 
-As part of the output, you will find data screening, 
-all three models used in the traditional Baron and 
+This function runs a complete simple mediation analysis with one
+mediator, similiar to model 4 in PROCESS by A. Hayes (2013).
+As part of the output, you will find data screening,
+all three models used in the traditional Baron and
 Kenny (1986) steps, total/direct/indirect effects, the z-score and p-value
-for the Aroian Sobel test, and the bootstrapped confidence interval for the indirect effect.
+for the Aroian Sobel test, and the bootstrapped confidence interval
+for the indirect effect.
 }
 \examples{
-mediation1(y = "cyl", x = "mpg", m = "disp", cvs = c("drat", "gear"))
+mediation1(y = "cyl", x = "mpg", m = "disp",
+          cvs = c("drat", "gear"), df = mtcars)
 }
 \keyword{bootstrapping}
 \keyword{data}

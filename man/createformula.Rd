@@ -2,9 +2,9 @@
 % Please edit documentation in R/createformula.R
 \name{createformula}
 \alias{createformula}
-\title{createformula}
+\title{Create Regression Formulas}
 \usage{
-createformula(y, x, m = NULL, cvs = NULL)
+createformula(y, x, m, cvs = NULL)
 }
 \arguments{
 \item{y}{The dependent variable column name from your dataframe.}
@@ -16,11 +16,17 @@ createformula(y, x, m = NULL, cvs = NULL)
 \item{cvs}{The covariates you would like to include in the model. Use a `c()` concatenated vector to use multiple covariates.}
 }
 \description{
-This function creates the formulas for `lm()` to run the regression models necessary for data screening and mediation or moderation models. 
-The output includes a list of equations used for mediation, which will updated as moderation is added to the package.
+This function creates the formulas for \code{lm()} to run the
+regression models necessary for data screening and mediation
+or moderation models.
+}
+\details{
+The output currently includes a list of equations used for simple mediation,
+which will updated as moderation is added to the package.
 }
 \examples{
-createformula(y = "cyl", x = "mpg", m = "disp", cvs = c("drat", "gear"))
+createformula(y = "cyl", x = "mpg", m = "disp",
+             cvs = c("drat", "gear"))
 }
 \keyword{formulas}
 \keyword{mediation,}

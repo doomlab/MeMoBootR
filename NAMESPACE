@@ -2,5 +2,6 @@
 
 export(createformula)
 export(datascreen)
-export(indirectm1)
+export(draw.med)
+export(indirectmed)
 export(mediation1)

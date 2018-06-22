@@ -2,28 +2,35 @@
 % Please edit documentation in R/datascreen.R
 \name{datascreen}
 \alias{datascreen}
-\title{datascreen}
+\title{Data Screening for Regression}
 \usage{
-datascreen(eq, df, with_out = T)
+datascreen(eq, df, with_out = T, xcat = F)
 }
 \arguments{
-\item{eq}{The full equation with all x, m, and cvs created from the `createformula()` function.}
+\item{eq}{The full equation with all x, m, and cvs created from the
+\code{createformula()} function.}
 
-\item{df}{The dataframe where the columns from the formula can be found. Note that only the columns used in the analysis will be screened.}
+\item{df}{The dataframe where the columns from the formula can
+be found. Note that only the columns used in the analysis will be screened.}
 
-\item{with_out}{A logical value where you want to keep the outliers in the data screening `TRUE` or exclude them from the data screening `FALSE`.}
+\item{with_out}{A logical value where you want to keep the outliers in
+the data screening \code{TRUE} or exclude them from the data screening \code{FALSE}.}
+
+\item{xcat}{This variable tells the function if X is categorical variable.
+If so, it will ignore Mahalanobis distance calculation, which cannot
+be done on categorical variables.}
 }
 \description{
-This function using the data screening procedures outlined 
-by Tabachnick and Fidell to analyze the data for outliers 
-using Mahalanobis distance, Cook's, and Leverage values. 
-Further, the output includes correlations for additivity/multicollinearity, 
+This function using the data screening procedures outlined
+by Tabachnick and Fidell (2012) to analyze the data for outliers
+using Mahalanobis distance, Cook's, and Leverage values.
+Further, the output includes correlations for additivity/multicollinearity,
 and plots for linearity, normality, and homogeneity/homoscedasticity.
-You can learn more about the data screening procedure implemented here at 
+You can learn more about the data screening procedure implemented here at
 the Statistics of DOOM YouTube channel.
 }
 \examples{
-datascreen(eq = "cyl ~ mpg + disp + drat + gear", 
+datascreen(eq = "cyl ~ mpg + disp + drat + gear",
            df = mtcars, with_out = TRUE)
 }
 \keyword{data}
