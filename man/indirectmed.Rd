@@ -4,7 +4,7 @@
 \alias{indirectmed}
 \title{Indirect Effect for Mediation}
 \usage{
-indirectmed(formula2, formula3, x, m, df, random)
+indirectmed(formula2, formula3, x, med.var, df, random)
 }
 \arguments{
 \item{formula2}{The formula for mediation for the a path, usually
@@ -17,7 +17,7 @@ if the \code{createformula()} function is used.}
 
 \item{x}{The column name for x in the data frame.}
 
-\item{m}{The column name for m in the data frame.}
+\item{med.var}{The column name for m in the data frame.}
 
 \item{df}{The dataframe where the columns from the formula can be found.}
 
