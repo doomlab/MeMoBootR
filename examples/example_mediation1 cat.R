@@ -7,11 +7,11 @@ devtools::install_github("doomlab/MeMoBootR")
 library(MeMoBootR)
 
 data(mtcars)
-mtcars$cyl = as.numeric(mtcars$cyl)
+mtcars$cyl = as.factor(mtcars$cyl)
 
 saved = mediation1(y = "mpg", #DV
                    x = "cyl", #IV
-                   m = "hp",  #Mediator
+                   m = "wt",  #Mediator
                    cvs = NULL, #Any covariates
                    df = mtcars, #Dataframe
                    with_out = T, #Not required but can change to F for no outliers
@@ -41,16 +41,12 @@ summary(saved$model2) #a path
 summary(saved$model3) #b and c' path
 
 #X predicts Y total effects
-#c path b = -1.52, t(28) = -3.64, p = .001
-#F(3,28) = 46.53, p < .001, R2 = .83
 
 #X predicts M
-#a path b = 32.97, t(28) = 6.64, p < .001
 
 #X predicts Y with M direct effects
-#c' path b = -0.81, t(27) = -1.23, p = .231
+
 #M predicts Y with X
-#b path b = -0.02, t(27) = -1.38, p = .179
 
 #total, direct, indirect effects
 saved$total.effect; saved$direct.effect; saved$indirect.effect
@@ -64,13 +60,11 @@ saved$boot.results
 #bootstrapped CI
 saved$boot.ci
 
-#indirect = -0.72, SE = 0.52, 95% CI[-1.81, 0.22]
-
 ####power####
 library(pwr)
 ##power runs on cohen's f - not to be confused with anova f.
 ##take the R squared to convert
-R2 =  .06
+R2 =  .14
 feta = R2 / (1-R2)
 
 #u is df model, which is number of predictors
@@ -78,5 +72,5 @@ feta = R2 / (1-R2)
 #sample size so we leave this one blank.
 #f2 is cohen f squared
 
-pwr.f2.test(u = 4, v = NULL, f2 = feta, sig.level = .05, power = .80)
+pwr.f2.test(u = 3, v = NULL, f2 = feta, sig.level = .05, power = .80)
 #remember that you need to add u + v to get final sample size
