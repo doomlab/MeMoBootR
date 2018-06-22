@@ -4,7 +4,7 @@
 \alias{draw.med}
 \title{Simple Mediation Diagrams}
 \usage{
-draw.med(model1, model2, model3, y, x, m)
+draw.med(model1, model2, model3, y, x, m, df)
 }
 \arguments{
 \item{model1}{The saved regression model of \code{y~x} model where X predicts Y.}

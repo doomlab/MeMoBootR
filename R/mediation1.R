@@ -115,7 +115,7 @@ mediation1 = function(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000, conf_
     } #close for loop
   } #close else statement
 
-  triangle = draw.med(model1, model2, model3, y, x, m)
+  triangle = draw.med(model1, model2, model3, y, x, m, finaldata)
 
   return(list("datascreening" = screen,
               "model1" = model1,

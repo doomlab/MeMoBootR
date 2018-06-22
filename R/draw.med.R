@@ -17,14 +17,14 @@
 #' the diagram parameters to your liking.
 #' @export
 
-draw.med <- function(model1, model2, model3, y, x, m) {
+draw.med <- function(model1, model2, model3, y, x, m, df) {
 
   require(diagram)
   #figure out x categorical
-  if (is.factor(x)){
+  if (is.factor(df[ , x])){
     xcat = T
     levelsx = paste(x, levels(df[, x])[-1], sep = "")
-  }
+  } else {xcat = F}
 
   if (xcat == F) { #run this if X is continuous
   a = round(coef(model2)[x],2)

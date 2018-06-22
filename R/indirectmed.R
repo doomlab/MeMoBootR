@@ -25,10 +25,10 @@ indirectmed = function(formula2, formula3, x, df, random) {
   d = df[random, ] #randomize by row
 
   #figure out x categorical
-  if (is.factor(x)){
+  if (is.factor(df[ , x])){
     xcat = T
     levelsx = paste(x, levels(df[, x])[-1], sep = "")
-    }
+    } else { xcat = F }
 
   #run the models
   model2 = lm(formula2, data = d)
