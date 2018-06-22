@@ -12,6 +12,8 @@
 #' @param formula3 The formula for mediation for the b path, usually
 #' \code{y ~ x + m}. Can also include covariates and will be
 #' \code{eq3} if the \code{createformula()} function is used.
+#' @param x The column name for x in the data frame.
+#' @param m The column name for m in the data frame.
 #' @param df The dataframe where the columns from the formula can be found.
 #' @param random This variable is used to denote the data frame will be
 #' randomize by row, as part of the \code{boot} library.
@@ -21,7 +23,7 @@
 #' indirectmed("disp ~ mpg", "cyl ~ mpg + disp", mtcars)
 #' @export
 
-indirectmed = function(formula2, formula3, x, df, random) {
+indirectmed = function(formula2, formula3, x, m, df, random) {
   d = df[random, ] #randomize by row
 
   #figure out x categorical
@@ -36,13 +38,13 @@ indirectmed = function(formula2, formula3, x, df, random) {
 
   if (xcat == F) { #run this if X is continuous
   a = coef(model2)[x]
-  b = coef(model3)[x]
+  b = coef(model3)[m]
   indirect = a*b
   } else {
     indirect = NA
     for (i in 1:length(levelsx)) {
       a = coef(model2)[levelsx[i]]
-      b = coef(model3)[levelsx[i]]
+      b = coef(model3)[m]
       indirect[i] = a*b
     } #close for loop around x
   } #close else statement

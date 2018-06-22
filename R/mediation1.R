@@ -98,6 +98,7 @@ mediation1 = function(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000, conf_
                      formula2 = allformulas$eq2,
                      formula3 = allformulas$eq3,
                      x = x,
+                     m = m,
                      R = nboot)
 
   if (xcat == F) { #run this if X is continuous
