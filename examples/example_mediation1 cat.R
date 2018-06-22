@@ -73,9 +73,9 @@ saved$boot.results
 #bootstrapped CI
 saved$boot.ci
 
-#indirect = -3.54, 95% CI[-6.66, -0.26] does cross zero,
-#so we would consider this mediation
-#indirect = -10.40, 95% CI[-17.20, -3.35]
+#HEY I FIXED THIS!
+#indirect = -2.67, 95% CI[-4.58, -0.78] does not include zero, so mediation occurred
+#indirect = -5.49, 95% CI[-8.28, -2.62] does not include zero, so mediation occurred
 
 #diagram
 saved$diagram
