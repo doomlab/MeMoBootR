@@ -42,10 +42,10 @@ mediation1 = function(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000, conf_
   if (is.factor(df[ , x])){xcat = TRUE} else {xcat = FALSE}
 
   #first create the full formula for data screening
-  allformulas = createformula(y, x, m, cvs)
+  allformulas = createformula(y, x, m, cvs, type = "mediation1")
 
   #then do data screening
-  screen = datascreen(allformulas$eq3, df, with_out, xcat)
+  screen = datascreen(allformulas$eq3, df, with_out)
 
   #take out outlines and create finaldata
   if (with_out == F) { finaldata = subset(screen$fulldata, totalout < 2) } else { finaldata = screen$fulldata }

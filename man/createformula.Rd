@@ -4,7 +4,7 @@
 \alias{createformula}
 \title{Create Regression Formulas}
 \usage{
-createformula(y, x, m, cvs = NULL)
+createformula(y, x, m, cvs = NULL, type)
 }
 \arguments{
 \item{y}{The dependent variable column name from your dataframe.}
@@ -26,7 +26,7 @@ which will updated as moderation is added to the package.
 }
 \examples{
 createformula(y = "cyl", x = "mpg", m = "disp",
-             cvs = c("drat", "gear"))
+             cvs = c("drat", "gear"), type = "moderation1")
 }
 \keyword{formulas}
 \keyword{mediation,}

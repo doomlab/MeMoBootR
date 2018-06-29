@@ -25,6 +25,11 @@ Head over to the [OSF Page](https://osf.io/ns6jz/) to view examples of the funct
 
 # Version Information
 
+Version: 0.0.0.3000
+  - Added two way interactions (model 1 - moderation)
+  - No good categorical options yet (i.e., it'll run but not what you want probably yet)
+  - Updated data screening so it can handle categorical CV values across all analyses
+  
 Version: 0.0.0.2000
   - Added diagram ability with `diagram` library (wouldn't mind help here, the diagrams for mediation are only ok)
   - Added ability for categorical X variables in simple mediation

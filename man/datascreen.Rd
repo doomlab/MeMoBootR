@@ -4,7 +4,7 @@
 \alias{datascreen}
 \title{Data Screening for Regression}
 \usage{
-datascreen(eq, df, with_out = T, xcat = F)
+datascreen(eq, df, with_out = T)
 }
 \arguments{
 \item{eq}{The full equation with all x, m, and cvs created from the
@@ -15,10 +15,6 @@ be found. Note that only the columns used in the analysis will be screened.}
 
 \item{with_out}{A logical value where you want to keep the outliers in
 the data screening \code{TRUE} or exclude them from the data screening \code{FALSE}.}
-
-\item{xcat}{This variable tells the function if X is categorical variable.
-If so, it will ignore Mahalanobis distance calculation, which cannot
-be done on categorical variables.}
 }
 \description{
 This function using the data screening procedures outlined
@@ -30,7 +26,7 @@ You can learn more about the data screening procedure implemented here at
 the Statistics of DOOM YouTube channel.
 }
 \examples{
-datascreen(eq = "cyl ~ mpg + disp + drat + gear",
+datascreen(eq = "mpg ~ cyl + disp + drat + gear",
            df = mtcars, with_out = TRUE)
 }
 \keyword{data}
