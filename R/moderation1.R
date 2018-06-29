@@ -68,7 +68,7 @@ moderation1 = function(y, x, m, cvs = NULL, df, with_out = T) {
                     ". \n\nAt average levels of ", m, ", you see that every unit increase in ",
                     x, " predicts ", round(coef(model1)[x],2), " unit change in ", y,
                     ". \n\nAt high levels of ", m, ", you see that every unit increase in ",
-                    x, " predicts ", round(highslope,2), " unit change in ", y,
+                    x, " predicts ", round(coef(model1high)[x],2), " unit change in ", y,
                     ".", sep = "")
 
   lowlabel = paste("-1SD ", m, sep = "")
