@@ -56,49 +56,90 @@ moderation1 = function(y, x, m, cvs = NULL, df, with_out = T) {
 
   model1 = lm(allformulas$eq1, data = finaldata) #full model
 
-  #create simple slopes
-  finaldata$lowM = finaldata[ , m] + sd(finaldata[ , m])
-  finaldata$highM = finaldata[ , m] - sd(finaldata[ , m])
+  if (!is.factor(finaldata[ , m])){ #run this on categorical M
+    #create simple slopes
+    finaldata$lowM = finaldata[ , m] + sd(finaldata[ , m])
+    finaldata$highM = finaldata[ , m] - sd(finaldata[ , m])
 
-  model1low = lm(allformulas$eq2, data = finaldata) #low simple slope
-  model1high = lm(allformulas$eq3, data = finaldata) #high simple slope
+    model1low = lm(allformulas$eq2, data = finaldata) #low simple slope
+    model1high = lm(allformulas$eq3, data = finaldata) #high simple slope
 
-  simslopes = paste("At low levels of ", m, ", you see that every unit increase in ",
-                    x, " predicts ", round(coef(model1low)[x],2), " unit change in ", y,
-                    ". \n\nAt average levels of ", m, ", you see that every unit increase in ",
-                    x, " predicts ", round(coef(model1)[x],2), " unit change in ", y,
-                    ". \n\nAt high levels of ", m, ", you see that every unit increase in ",
-                    x, " predicts ", round(coef(model1high)[x],2), " unit change in ", y,
-                    ".", sep = "")
+    simslopes = paste("At low levels of ", m, ", you see that every unit increase in ",
+                      x, " predicts ", round(coef(model1low)[x],2), " unit change in ", y,
+                      ". \n\nAt average levels of ", m, ", you see that every unit increase in ",
+                      x, " predicts ", round(coef(model1)[x],2), " unit change in ", y,
+                      ". \n\nAt high levels of ", m, ", you see that every unit increase in ",
+                      x, " predicts ", round(coef(model1high)[x],2), " unit change in ", y,
+                      ".", sep = "")
 
-  lowlabel = paste("-1SD ", m, sep = "")
-  avglabel = paste("Average ", m, sep = "")
-  highlabel = paste("+1SD ", m, sep = "")
+    lowlabel = paste("-1SD ", m, sep = "")
+    avglabel = paste("Average ", m, sep = "")
+    highlabel = paste("+1SD ", m, sep = "")
 
-  plot_sim = ggplot(finaldata, aes(finaldata[ , x],finaldata[ , y])) +
-    xlab(x) +
-    ylab(y) +
-    geom_point() +
-    scale_size_continuous(guide = FALSE) +
-    geom_abline(aes(intercept = coef(model1low)["(Intercept)"], slope = coef(model1low)[x], linetype = lowlabel)) +
-    geom_abline(aes(intercept = coef(model1)["(Intercept)"], slope = coef(model1)[x], linetype = avglabel)) +
-    geom_abline(aes(intercept = coef(model1high)["(Intercept)"], slope = coef(model1high)[x], linetype = highlabel)) +
-    scale_linetype_manual(values = c("dotted", "dashed", "solid"),
-                          breaks = c(lowlabel, avglabel, highlabel),
-                          name = "Simple Slope") +
-    coord_cartesian(xlim = c(min(finaldata[, x]), max(finaldata[, x])),
-                    ylim = c(min(finaldata[, y]), max(finaldata[, y]))) +
-    cleanup +
-    NULL
+    plot_sim = ggplot(finaldata, aes(finaldata[ , x],finaldata[ , y])) +
+      xlab(x) +
+      ylab(y) +
+      geom_point() +
+      scale_size_continuous(guide = FALSE) +
+      geom_abline(aes(intercept = coef(model1low)["(Intercept)"], slope = coef(model1low)[x], linetype = lowlabel)) +
+      geom_abline(aes(intercept = coef(model1)["(Intercept)"], slope = coef(model1)[x], linetype = avglabel)) +
+      geom_abline(aes(intercept = coef(model1high)["(Intercept)"], slope = coef(model1high)[x], linetype = highlabel)) +
+      scale_linetype_manual(values = c("dotted", "dashed", "solid"),
+                            breaks = c(lowlabel, avglabel, highlabel),
+                            name = "Simple Slope") +
+      coord_cartesian(xlim = c(min(finaldata[, x]), max(finaldata[, x])),
+                      ylim = c(min(finaldata[, y]), max(finaldata[, y]))) +
+      cleanup +
+      NULL
 
-  return(list("datascreening" = screen,
-              "model1" = model1,
-              "model1low" = model1low,
-              "model1high" = model1high,
-              "interpretation" = simslopes,
-              "graphslopes" = plot_sim
-  ))
+    return(list("datascreening" = screen,
+                "model1" = model1,
+                "model1low" = model1low,
+                "model1high" = model1high,
+                "interpretation" = simslopes,
+                "graphslopes" = plot_sim))
+
+  } else { #run this on categorical M
+
+    #figure out simple slopes
+    if (!is.null(cvs)) {
+      eqsim =  paste(y, "~", x, "+", paste(cvs, collapse = " + "), sep = " ")
+      } else {
+        eqsim = paste(y, "~", x, sep = " ")
+      }
+
+
+    simmodels = by(finaldata, finaldata[ , m], function(finaldata) lm(eqsim, data = finaldata))
+
+    simslopes = ""
+    for (i in levels(finaldata[ , m])) {
+      simslopes = paste(simslopes,
+                        "At ", i, " levels of ", m, ", you see that every unit increase in ",
+                        x, " predicts ", round(simmodels[[i]]$coefficients[x], 2),
+                        " unit change in ", y, ". \n\n", sep = "")
+    }
+
+    plot_sim = ggplot(finaldata, aes(finaldata[ , x],finaldata[ , y],
+                                     color = finaldata[ , m])) +
+      xlab(x) +
+      ylab(y) +
+      geom_point() +
+      geom_smooth(method=lm, aes(fill=finaldata[ , m])) +
+      coord_cartesian(xlim = c(min(finaldata[, x]), max(finaldata[, x])),
+                      ylim = c(min(finaldata[, y]), max(finaldata[, y]))) +
+      labs(fill = m, color = m) +
+      cleanup +
+      NULL
+
+    return(list("datascreening" = screen,
+                "model1" = model1,
+                "slopemodels" = simmodels,
+                "interpretation" = simslopes,
+                "graphslopes" = plot_sim))
+
+  } #close categorical mediation
+
 }
 
-#' @rdname mediation1
+#' @rdname moderation1
 #' @export
