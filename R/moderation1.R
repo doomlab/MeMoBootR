@@ -41,6 +41,9 @@ moderation1 = function(y, x, m, cvs = NULL, df, with_out = T) {
   #stop if Y is categorical
   if (is.factor(df[ , y])){stop("Y should not be a categorical variable. Log regression options are coming soon.")}
 
+  #stop if X is categorical
+  if (is.factor(df[ , x])){stop("X should not be categorical, please put categorical predictors as M (or use ANOVA for double categorical variables).")}
+
   #first create the full formula for data screening
   allformulas = createformula(y, x, m, cvs, type = "moderation1")
 

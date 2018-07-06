@@ -42,34 +42,22 @@ saved$datascreening$homogen
 summary(saved$model1)
 
 ##overall model statistics
-#F(5, 44) = 10.30, p < .001, R2 = .54
 
 ##each predictor one at a time
-#Illiteracy b = -114.78, t(44) = -0.67, p = .508, not significant predictor
-#Murder, also not signifificant
-#Population, as population increases, income increases
-#Area, as area increases, income increases
-#Interaction b = -115.56, t(44) = -3.36, p = .002 - significant
-#difficult to interpret...
 
-#Low Simple Slope Model
-summary(saved$model1low)
+##Interaction
 
-#look for is X because M is the slope we are manipulating
-#Illiteracy not predictor of Income
+#Simple slopes by levels of M
+saved$slopemodels
 
-#High Simple Slope Model
-summary(saved$model1high)
+##view with lapply
+lapply(saved$slopemodels, summary)
 
-#Illiteracy is predictor of income
+##or pull one at a time
+
 
 #Interpretation of Slopes
 cat(saved$interpretation)
-
-##what does it mean if the interaction is significant but none of the simple
-##slopes are significant...??
-###implies the simple slopes are changing/different but that the main effect
-###X to Y is not significant
 
 #Graph of the Slopes
 saved$graphslopes

@@ -25,6 +25,9 @@ Head over to the [OSF Page](https://osf.io/ns6jz/) to view examples of the funct
 
 # Version Information
 
+Version: 0.0.0.4000
+  - Added categorical moderators, where X is continuous, M can be categorical or continuous. Please note that it will not run with X categorical. (model 1 - moderation) 
+
 Version: 0.0.0.3000
   - Added two way interactions (model 1 - moderation)
   - No good categorical options yet (i.e., it'll run but not what you want probably yet)
