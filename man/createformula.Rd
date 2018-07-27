@@ -4,14 +4,16 @@
 \alias{createformula}
 \title{Create Regression Formulas}
 \usage{
-createformula(y, x, m, cvs = NULL, type)
+createformula(y, x, m, m2 = NULL, cvs = NULL, type)
 }
 \arguments{
 \item{y}{The dependent variable column name from your dataframe.}
 
 \item{x}{The independent variable column name from your dataframe. This column will be treated as X in mediation or moderation models, please see diagrams online for examples.}
 
-\item{m}{The first mediator or moderator for your model. This function will incorporate multiple mediators/moderators later.}
+\item{m}{The first mediator or moderator for your model.}
+
+\item{m2}{The second mediator or moderator for your model.}
 
 \item{cvs}{The covariates you would like to include in the model. Use a `c()` concatenated vector to use multiple covariates.}
 }

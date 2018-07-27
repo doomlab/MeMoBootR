@@ -37,5 +37,4 @@ indirectmed("disp ~ mpg", "cyl ~ mpg + disp", mtcars)
 \keyword{effect}
 \keyword{indirect}
 \keyword{mediation,}
-\keyword{moderation,}
 \keyword{regression,}

@@ -16,44 +16,64 @@
 #' \code{y ~ x + m1 + m2}. Can also include covariates and will be \code{eq4} if the
 #' \code{createformula()} function is used.
 #' @param x The column name for x in the data frame.
-#' @param med.var The column name for m in the data frame.
-#' @param df The dataframe where the columns from the formula can be found.
+#' @param m1 The column name for mediator 1 in the data frame.
+#' @param m2 The column name for mediator 2 in the data frame.
+#' @param data The dataframe where the columns from the formula can be found.
 #' @param random This variable is used to denote the data frame will be
 #' randomize by row, as part of the \code{boot} library.
 #' @keywords mediation, regression, indirect effect
 #' @export
 #' @examples
-#' indirectmed("disp ~ mpg", "cyl ~ mpg + disp", mtcars)
+#' indirectmed2("disp ~ mpg", "cyl ~ mpg + disp", mtcars)
 #' @export
 
-indirectmed = function(formula2, formula3, formula4, x, m1, m2, df, random) {
-  d = df[random, ] #randomize by row
+indirectmed2 = function(formula2, formula3,
+                        formula4, x, m1, m2, data, random) {
+  d = data[random, ] #randomize by row
 
   #figure out x categorical
-  if (is.factor(df[ , x])){
+  if (is.factor(data[ , x])){
     xcat = T
-    levelsx = paste(x, levels(df[, x])[-1], sep = "")
+    levelsx = paste(x, levels(data[, x])[-1], sep = "")
     } else { xcat = F }
 
   #run the models
   model2 = lm(formula2, data = d)
   model3 = lm(formula3, data = d)
+  model4 = lm(formula4, data = d)
 
   if (xcat == F) { #run this if X is continuous
-  a = coef(model2)[x]
-  b = coef(model3)[med.var]
-  indirect = a*b
+
+    #relevant coefficients
+    a1 = coef(model2)[x]
+    b1 = coef(model4)[m1]
+    a2 = coef(model3)[x]
+    b2 = coef(model4)[m2]
+    d21 = coef(model3)[m1]
+
+    indirect1 = a1*b1
+    indirect2 = a2*b2
+    indirect3 = a1*d21*b2
+
   } else {
     indirect = NA
     for (i in 1:length(levelsx)) {
-      a = coef(model2)[levelsx[i]]
-      b = coef(model3)[med.var]
-      indirect[i] = a*b
+      #relevant coefficients
+      a1 = coef(model2)[levelsx[i]]
+      b1 = coef(model4)[m1]
+      a2 = coef(model3)[levelsx[i]]
+      b2 = coef(model4)[m2]
+      d21 = coef(model3)[m1]
+
+      indirect1[i] = a1*b1
+      indirect2[i] = a2*b2
+      indirect3[i] = a1*d21*b2
+
     } #close for loop around x
   } #close else statement
 
-  return(indirect)
+  return(c(indirect1, indirect2, indirect3))
 }
 
-#' @rdname indirectmed
+#' @rdname indirectmed2
 #' @export

@@ -25,12 +25,13 @@
 #' @keywords mediation, regression, data screening, bootstrapping
 #' @export
 #' @examples
-#' mediation1(y = "Q11", x = "Q151", m1 = "Q31", m2 = "Q41",
+#' mediation2(y = "Q11", x = "Q151", m1 = "Q31", m2 = "Q41",
 #'           cvs = c("Q121"), df = mediation2, nboot = 1000, with_out = T,
 #'           conf_level = .95)
 #' @export
 
-mediation2 = function(y, x, m1, m2, cvs = NULL, df, with_out = T, nboot = 1000, conf_level = .95) {
+mediation2 = function(y, x, m1, m2, cvs = NULL, df, with_out = T,
+                      nboot = 1000, conf_level = .95) {
 
   require(boot)
 
@@ -78,7 +79,8 @@ mediation2 = function(y, x, m1, m2, cvs = NULL, df, with_out = T, nboot = 1000, 
 
     #figure out all the labels for X
     levelsx = paste(x, levels(df[, x])[-1], sep = "")
-    total = NA; indirect = NA; direct = NA; zscore = NA; pvalue = NA
+    total = NA; indirect1 = NA; indirect2 = NA; indirect3 = NA
+    direct = NA; zscore = NA; pvalue = NA
 
     #loop over that to figure out sobel and reporting
     for (i in 1:length(levelsx)){
@@ -104,41 +106,57 @@ mediation2 = function(y, x, m1, m2, cvs = NULL, df, with_out = T, nboot = 1000, 
                      statistic = indirectmed2,
                      formula2 = allformulas$eq2,
                      formula3 = allformulas$eq3,
+                     formula4 = allformulas$eq4,
                      x = x,
-                     med.var = m,
+                     m1 = m1,
+                     m2 = m2,
                      R = nboot)
 
   if (xcat == F) { #run this if X is continuous
-  bootci = boot.ci(bootresults,
+    bootci = list()
+
+    for (i in 1:length(bootresults$t0)) {
+
+      bootci[[i]] = boot.ci(bootresults,
                    conf = conf_level,
-                   type = "norm")
+                   type = "norm",
+                   index = i)
+      names(bootci)[[i]] = paste(names(bootresults$t0)[[i]], ".", i, sep = "")
+      }
+
   } else {
     bootci = list()
-    for (i in 1:length(levelsx)){
-      bootci[[i]] = boot.ci(bootresults,
+    sim = 1
+    for (i in 1:length(levelsx)){ #loop over categorical x
+      for (r in 1:length(bootresults$t0)) { #loop over multiple bootstraps
+
+        bootci[[sim]] = boot.ci(bootresults,
                           conf = conf_level,
                           type = "norm",
-                          index = i)
-      names(bootci)[[i]] = levelsx[[i]]
-    } #close for loop
-  } #close else statement
+                          index = sim)
 
-  triangle = draw.med(model1, model2, model3, y, x, m, finaldata)
+        names(bootci)[[sim]] = paste(levelsx[[i]], ".", names(bootresults$t0)[[r]], sep = "")
+        sim = sim + 1
+      } #close boot index
+
+    } #close levels index
+
+  } #close else statement
 
   return(list("datascreening" = screen,
               "model1" = model1,
               "model2" = model2,
               "model3" = model3,
+              "model4" = model4,
               "total.effect" = total,
               "direct.effect" = direct,
-              "indirect.effect" = indirect,
-              "z.score" = zscore,
-              "p.value" = pvalue,
+              "indirect.effect1" = indirect1,
+              "indirect.effect2" = indirect2,
+              "indirect.effect3" = indirect3,
               "boot.results" = bootresults,
-              "boot.ci" = bootci,
-              "diagram" = triangle
+              "boot.ci" = bootci
   ))
 }
 
-#' @rdname mediation1
+#' @rdname mediation2
 #' @export

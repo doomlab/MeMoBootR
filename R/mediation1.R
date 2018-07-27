@@ -28,7 +28,8 @@
 #'           cvs = c("drat", "gear"), df = mtcars)
 #' @export
 
-mediation1 = function(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000, conf_level = .95) {
+mediation1 = function(y, x, m, cvs = NULL, df, with_out = T,
+                      nboot = 1000, conf_level = .95) {
 
   require(boot)
 

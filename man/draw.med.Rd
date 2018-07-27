@@ -12,6 +12,14 @@ draw.med(model1, model2, model3, y, x, m, df)
 \item{model2}{The saved regression model of \code{m~x} model where X predicts M.}
 
 \item{model3}{The saved regression model of \code{y~x+m} model where X and M predict Y.}
+
+\item{y}{The dependent variable from your mediation.}
+
+\item{x}{The x variable from your mediation.}
+
+\item{m}{The mediator from your mediation.}
+
+\item{df}{The dataframe containing the y, x, m columns.}
 }
 \description{
 This function returns the code to create a simple mediation triangle,
@@ -28,5 +36,4 @@ the diagram parameters to your liking.
 \keyword{data}
 \keyword{diagram}
 \keyword{mediation,}
-\keyword{regression,}
 \keyword{screening,}

@@ -6,8 +6,11 @@
 #' @param model1 The saved regression model of \code{y~x} model where X predicts Y.
 #' @param model2 The saved regression model of \code{m~x} model where X predicts M.
 #' @param model3 The saved regression model of \code{y~x+m} model where X and M predict Y.
-#'
-#' @keywords mediation, regression, data screening, bootstrapping, diagram
+#' @param y The dependent variable from your mediation.
+#' @param x The x variable from your mediation.
+#' @param m The mediator from your mediation.
+#' @param df The dataframe containing the y, x, m columns.
+#' @keywords mediation, data screening, bootstrapping, diagram
 #' @export
 #' @examples
 #' draw.med(saved$model1, saved$model2, saved$model3)
