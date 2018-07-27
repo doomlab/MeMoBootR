@@ -13,7 +13,10 @@ To install the package take the following steps:
 3) Load the library to get started!
 `library(MeMoBootR)`
 
-4) Enjoy mediation and moderation complete with data screening. 
+4) Enjoy mediation and moderation complete with data screening.
+
+5) Cite the package!
+`Buchanan, E.M. (2018). MeMoBootR [Computer Program]. Avaliable at: https://github.com/doomlab/MeMoBootR`. 
 
 More tutorials, details, and other information added as I go. 
 
@@ -24,6 +27,8 @@ Many thanks to KD Valentine for the fantastic name suggestion.
 Head over to the [OSF Page](https://osf.io/ns6jz/) to view examples of the function in action. Included on the OSF page are youtube videos that explain the different functions and examples. Additionally, you can find information about the translation of the model numbers from PROCESSv3 to MeMoBootR.
 
 # Version Information
+Version: 0.0.0.4000
+  - Added serial mediation with two mediators (model 6). The model can handle covariates and should be able to do categorical X. I will be testing categorical X more next week.
 
 Version: 0.0.0.4000
   - Added categorical moderators, where X is continuous, M can be categorical or continuous. Please note that it will not run with X categorical. (model 1 - moderation) 
