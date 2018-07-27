@@ -1,17 +1,20 @@
-#' Indirect Effect for Mediation
+#' Indirect Effect for Serial Mediation
 #'
-#' This function runs a simple mediation model to calculate
+#' This function runs a serial mediation model with two mediators to calculate
 #' the indirect effect, which will be used for bootstrapping
 #' the confidence interval of the indirect effect. This function
 #' is used in conjunction with the \code{boot} function and is formatted to
 #' work as a bootstrapped effect.
 #'
-#' @param formula2 The formula for mediation for the a path, usually
-#' \code{m ~ x}. Can also include covariates and will be \code{eq2}
+#' @param formula2 The formula for mediation for the a1 path, usually
+#' \code{m1 ~ x}. Can also include covariates and will be \code{eq2}
 #' if the \code{createformula()} function is used.
-#' @param formula3 The formula for mediation for the b path, usually
-#' \code{y ~ x + m}. Can also include covariates and will be
+#' @param formula3 The formula for mediation for the a2 and d21 paths, usually
+#' \code{m2 ~ x + m1}. Can also include covariates and will be
 #' \code{eq3} if the \code{createformula()} function is used.
+#' @param formula4 The formula for mediation for the b1 and b2 paths, usually
+#' \code{y ~ x + m1 + m2}. Can also include covariates and will be \code{eq4} if the
+#' \code{createformula()} function is used.
 #' @param x The column name for x in the data frame.
 #' @param med.var The column name for m in the data frame.
 #' @param df The dataframe where the columns from the formula can be found.
@@ -23,7 +26,7 @@
 #' indirectmed("disp ~ mpg", "cyl ~ mpg + disp", mtcars)
 #' @export
 
-indirectmed = function(formula2, formula3, x, med.var, df, random) {
+indirectmed = function(formula2, formula3, formula4, x, m1, m2, df, random) {
   d = df[random, ] #randomize by row
 
   #figure out x categorical
