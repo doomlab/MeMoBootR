@@ -90,6 +90,69 @@ createformula = function (y, x, m, m2 = NULL, cvs = NULL, type){
                 "eq3" = eq3))
 
   } #return simple moderation
+
+  if (type == "moderation2"){
+
+    if (!is.null(cvs)) {
+      #y ~ x * m + cvs overallmodel
+      eq1 = paste(y, "~", x, "*", m, "+", x, "*", m2, "+",
+                  paste(cvs, collapse = " + "), sep = " ")
+      #avg m1 low m2
+      eq1.1 = paste(y, "~", x, "*", m, "+", x, "*", "lowM2", "+",
+                    paste(cvs, collapse = " + "), sep = " ")
+      #avg m1 high m2
+      eq1.2 = paste(y, "~", x, "*", m, "+", x, "*", "highM2", "+",
+                    paste(cvs, collapse = " + "), sep = " ")
+      #low m1 avg m2
+      eq2 = paste(y, "~", x, "*", "lowM1", "+", x, "*", m2, "+",
+                  paste(cvs, collapse = " + "), sep = " ")
+      #low m1 low m2
+      eq2.1 = paste(y, "~", x, "*", "lowM1", "+", x, "*", "lowM2", "+",
+                    paste(cvs, collapse = " + "), sep = " ")
+      #low m1 high m2
+      eq2.2 = paste(y, "~", x, "*", "lowM1", "+", x, "*", "highM2", "+",
+                    paste(cvs, collapse = " + "), sep = " ")
+      #high m1 avg m2
+      eq3 = paste(y, "~", x, "*", "highM1", "+", x, "*", m2, "+",
+                  paste(cvs, collapse = " + "), sep = " ")
+      #high m1 low m2
+      eq3.1 = paste(y, "~", x, "*", "highM1", "+", x, "*", "lowM2", "+",
+                    paste(cvs, collapse = " + "), sep = " ")
+      #high m1 high m2
+      eq3.2 = paste(y, "~", x, "*", "highM1", "+", x, "*", "highM2", "+",
+                    paste(cvs, collapse = " + "), sep = " ")
+    } else {
+      #y ~ x * m overallmodel
+      eq1 = paste(y, "~", x, "*", m, "+", x, "*", m2, sep = " ")
+      #avg m1 low m2
+      eq1.1 = paste(y, "~", x, "*", m, "+", x, "*", "lowM2", sep = " ")
+      #avg m1 high m2
+      eq1.2 = paste(y, "~", x, "*", m, "+", x, "*", "highM2", sep = " ")
+      #low m1 avg m2
+      eq2 = paste(y, "~", x, "*", "lowM1", "+", x, "*", m2, sep = " ")
+      #low m1 low m2
+      eq2.1 = paste(y, "~", x, "*", "lowM1", "+", x, "*", "lowM2", sep = " ")
+      #low m1 high m2
+      eq2.2 = paste(y, "~", x, "*", "lowM1", "+", x, "*", "highM2", sep = " ")
+      #high m1 avg m2
+      eq3 = paste(y, "~", x, "*", "highM1", "+", x, "*", m2, sep = " ")
+      #high m1 low m2
+      eq3.1 = paste(y, "~", x, "*", "highM1", "+", x, "*", "lowM2", sep = " ")
+      #high m1 high m2
+      eq3.2 = paste(y, "~", x, "*", "highM1", "+", x, "*", "highM2", sep = " ")
+    }
+    return(list("eq1" = eq1,
+                "eq2" = eq2,
+                "eq3" = eq3,
+                "eq1.1" = eq1.1,
+                "eq1.2" = eq1.2,
+                "eq2.1" = eq2.1,
+                "eq2.2" = eq2.2,
+                "eq3.1" = eq3.1,
+                "eq3.2" = eq3.2))
+
+  } #return two two-way moderation
+
 }
 
 #' @rdname createformula
