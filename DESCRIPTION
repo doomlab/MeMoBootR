@@ -1,6 +1,6 @@
 Package: MeMoBootR
 Title: Mediation-Moderation with Bootstrapping in R
-Version: 0.0.0.5000
+Version: 0.0.0.6000
 Authors@R: person("Erin", "Buchanan", email = "buchananlab@gmail.com", role = c("aut", "cre"))
 Description: This package compiles mediation and mmoderation analyses wherein a user can run either analysis with data screening and see output similar to PROCESS (Hayes, 2018) from SPSS. 
 Depends: R (>= 3.0.0), boot, diagram, ggplot2

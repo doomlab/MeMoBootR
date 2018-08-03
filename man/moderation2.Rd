@@ -2,7 +2,7 @@
 % Please edit documentation in R/moderation2.R
 \name{moderation2}
 \alias{moderation2}
-\title{Doule Two-Way Moderation}
+\title{Double Two-Way Moderation}
 \usage{
 moderation2(y, x, m1, m2, cvs = NULL, df, with_out = T)
 }

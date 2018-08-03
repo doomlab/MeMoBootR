@@ -1,4 +1,4 @@
-#' Doule Two-Way Moderation
+#' Double Two-Way Moderation
 #'
 #' This function runs a complete double two-way moderation analysis with two
 #' moderators, similiar to model 2 in PROCESS by A. Hayes (2013).
