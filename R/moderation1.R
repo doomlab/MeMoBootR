@@ -45,7 +45,8 @@ moderation1 = function(y, x, m, cvs = NULL, df, with_out = T) {
   if (is.factor(df[ , x])){stop("X should not be categorical, please put categorical predictors as M (or use ANOVA for double categorical variables).")}
 
   #first create the full formula for data screening
-  allformulas = createformula(y, x, m, cvs, type = "moderation1")
+  allformulas = createformula(y = y, x = x, m = m,
+                              cvs = cvs, type = "moderation1")
 
   #then do data screening
   screen = datascreen(allformulas$eq1, df, with_out)

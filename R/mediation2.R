@@ -46,7 +46,8 @@ mediation2 = function(y, x, m1, m2, cvs = NULL, df, with_out = T,
   if (is.factor(df[ , x])){xcat = TRUE} else {xcat = FALSE}
 
   #first create the full formula for data screening
-  allformulas = createformula(y, x, m = m1, m2, cvs, type = "mediation2")
+  allformulas = createformula(y = y, x = x, m = m1,
+                              m2 = m2, cvs = cvs, type = "mediation2")
 
   #then do data screening
   screen = datascreen(allformulas$eq4, df, with_out)

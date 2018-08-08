@@ -27,6 +27,9 @@ Many thanks to KD Valentine for the fantastic name suggestion.
 Head over to the [OSF Page](https://osf.io/ns6jz/) to view examples of the function in action. Included on the OSF page are youtube videos that explain the different functions and examples. Additionally, you can find information about the translation of the model numbers from PROCESSv3 to MeMoBootR.
 
 # Version Information
+Version: 0.0.0.6001
+  - Fixed bug with mediation1(), moderation1() that did not allow cvs to show up.
+
 Version: 0.0.0.6000
   - Added double two-way moderation - which is two two-way interactions with two moderators (model 2). 
   - The next goals are to make mediation2 and moderation2 work for categorical variables over the next couple of weeks. 
