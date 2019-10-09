@@ -25,7 +25,7 @@ license()
     #' now put in the examples here
 
 ##set your working directory to package file
-setwd("~/OneDrive - Missouri State University/RESEARCH/2 projects/MeMoBootR")
+#setwd("~/OneDrive - Missouri State University/RESEARCH/2 projects/MeMoBootR")
 
 ##run this thing
 library(roxygen2)
