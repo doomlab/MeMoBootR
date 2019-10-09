@@ -11,6 +11,7 @@
 #' @param x The independent variable column name from your dataframe. This column will be treated as X in mediation or moderation models, please see diagrams online for examples.
 #' @param m The first mediator or moderator for your model.
 #' @param m2 The second mediator or moderator for your model.
+#' @param mod A moderator for a moderated mediation model.
 #' @param cvs The covariates you would like to include in the model. Use a `c()` concatenated vector to use multiple covariates.
 #' @keywords mediation, moderation, regression, formulas
 #' @export
@@ -19,7 +20,7 @@
 #'              cvs = c("drat", "gear"), type = "moderation1")
 #' @export
 
-createformula = function (y, x, m, m2 = NULL, cvs = NULL, type){
+createformula = function (y, x, m, m2 = NULL, mod = NULL, cvs = NULL, type){
 
   if (type == "mediation1") {
 
@@ -67,6 +68,40 @@ createformula = function (y, x, m, m2 = NULL, cvs = NULL, type){
     }
     return(list("eq1" = eq1,
                 "eq2" = eq2,
+                "eq3" = eq3,
+                "eq4" = eq4))
+
+  } #return serial mediation with two mediators
+
+  if (type == "mediation2_moda") {
+
+    if (!is.null(cvs)) {
+      #y ~ x + cvs
+      eq1 = paste(y, "~", x, "+", paste(cvs, collapse = " + "), sep = " ")
+      #m1 ~ x + cvs
+      eq2 = paste(m, "~", x, "*", mod, "+", paste(cvs, collapse = " + "), sep = " ")
+      eq2.1 = paste(m, "~", x, "*", "lowMod", "+", paste(cvs, collapse = " + "), sep = " ")
+      eq2.2 = paste(m, "~", x, "*", "highMod", "+", paste(cvs, collapse = " + "), sep = " ")
+      #m2 ~ x + m1 + cvs
+      eq3 = paste(m2, "~", x, "+", m, "+", paste(cvs, collapse = " + "), sep = " ")
+      #y ~ x + m + cvs
+      eq4 = paste(y, "~", x, "+", m, "+", m2, "+", paste(cvs, collapse = " + "), sep = " ")
+    } else {
+      #y ~ x
+      eq1 = paste(y, "~", x, sep = " ")
+      #m1 ~ x + cvs
+      eq2 = paste(m, "~", x, "*", mod, sep = " ")
+      eq2.1 = paste(m, "~", x, "*", "lowMod", sep = " ")
+      eq2.2 = paste(m, "~", x, "*", "highMod", sep = " ")
+      #m2 ~ x + m1 + cvs
+      eq3 = paste(m2, "~", x, "+", m, sep = " ")
+      #y ~ x + m + cvs
+      eq4 = paste(y, "~", x, "+", m, "+", m2, sep = " ")
+    }
+    return(list("eq1" = eq1,
+                "eq2" = eq2,
+                "eq2.1" = eq2.1,
+                "eq2.2" = eq2.2,
                 "eq3" = eq3,
                 "eq4" = eq4))
 
