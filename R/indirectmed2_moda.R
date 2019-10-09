@@ -99,8 +99,13 @@ indirectmed2_moda <- function(formula2, formula3,
     } #close for loop
   } #close else x is categorical
 
-  return(c(indirect1_avg, indirect1_low, indirect1_high,
-           indirect2, indirect3_avg, indirect3_low, indirect3_high))
+  return(c(indirect1_avg = indirect1_avg,
+           indirect1_low = indirect1_low,
+           indirect1_high = indirect1_high,
+           indirect2 = indirect2,
+           indirect3_avg = indirect3_avg,
+           indirect3_low = indirect3_low,
+           indirect3_high = indirect3_high))
 }
 
 #' @rdname indirectmed2_moda

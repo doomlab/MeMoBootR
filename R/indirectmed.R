@@ -49,7 +49,7 @@ indirectmed = function(formula2, formula3, x, med.var, df, random) {
     } #close for loop around x
   } #close else statement
 
-  return(indirect)
+  return(indirect = indirect)
 }
 
 #' @rdname indirectmed

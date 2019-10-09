@@ -73,7 +73,9 @@ indirectmed2 = function(formula2, formula3,
     } #close for loop around x
   } #close else statement
 
-  return(c(indirect1, indirect2, indirect3))
+  return(c(indirect1 = indirect1,
+           indirect2 = indirect2,
+           indirect3 = indirect3))
 }
 
 #' @rdname indirectmed2
