@@ -33,7 +33,7 @@
 #'           conf_level = .95)
 #' @export
 
-mediation2 = function(y, x, m1, m2, mod, cvs = NULL, df, with_out = T,
+mediation2_moda <- function(y, x, m1, m2, mod, cvs = NULL, df, with_out = T,
                       nboot = 1000, conf_level = .95) {
 
   require(boot)
@@ -52,21 +52,35 @@ mediation2 = function(y, x, m1, m2, mod, cvs = NULL, df, with_out = T,
   if (is.factor(df[ , x])){xcat = TRUE} else {xcat = FALSE}
 
   #first create the full formula for data screening
-  allformulas = createformula(y = y, x = x, m = m1,
+  allformulas <- createformula(y = y, x = x, m = m1,
                               m2 = m2, mod = mod, cvs = cvs, type = "mediation2_moda")
 
   #then do data screening, include moderator
-  screen = datascreen(paste(allformulas$eq4, "+", mod, sep = " "), df, with_out)
+  screen <- datascreen(paste(allformulas$eq4, "+", mod, sep = " "), df, with_out)
 
   #take out outlines and create finaldata
   if (with_out == F) { finaldata = subset(screen$fulldata, totalout < 2) } else { finaldata = screen$fulldata }
 
+  #center all the variables otherwise makes no sense
+  if (!is.factor(finaldata[ , x])){ finaldata[ , x] <- scale(finaldata[ , x], scale = F) }
+  if (!is.factor(finaldata[ , m1])){ finaldata[ , m1] <- scale(finaldata[ , m1], scale = F) }
+  if (!is.factor(finaldata[ , m2])){ finaldata[ , m2] <- scale(finaldata[ , m2], scale = F) }
+
+  #create low and high moderation
+  if (!is.factor(finaldata[ , mod])){
+    finaldata[ , mod] <- scale(finaldata[ , mod], scale = F)
+    finaldata$lowMod = finaldata[ , mod] + sd(finaldata[ , mod])
+    finaldata$highMod = finaldata[ , mod] - sd(finaldata[ , mod])
+  }
+
   model1 = lm(allformulas$eq1, data = finaldata) #c path
   model2 = lm(allformulas$eq2, data = finaldata) #a1_avg path
-  model2.1 = lm(allformulas$eq2.1, data = finaldata) #a1_low path
-  model2.2 = lm(allformulas$eq2.2, data = finaldata) #a1_high path
   model3 = lm(allformulas$eq3, data = finaldata) #a2 d21 path
   model4 = lm(allformulas$eq4, data = finaldata) #b2 c' paths
+
+  #moderation effects
+  model2.1 = lm(allformulas$eq2.1, data = finaldata) #a1_low path
+  model2.2 = lm(allformulas$eq2.2, data = finaldata) #a1_high path
 
   if (xcat == F){ #run this with continuous X
 
@@ -124,14 +138,15 @@ mediation2 = function(y, x, m1, m2, mod, cvs = NULL, df, with_out = T,
     } #close for loop
   } #close else x is categorical
 
-  bootresults = boot(data = finaldata,
-                     statistic = indirectmed2,
+  bootresults <- boot(data = finaldata,
+                     statistic = indirectmed2_moda,
                      formula2 = allformulas$eq2,
                      formula3 = allformulas$eq3,
                      formula4 = allformulas$eq4,
                      x = x,
                      m1 = m1,
                      m2 = m2,
+                     mod = mod,
                      R = nboot)
 
   if (xcat == F) { #run this if X is continuous
@@ -168,13 +183,19 @@ mediation2 = function(y, x, m1, m2, mod, cvs = NULL, df, with_out = T,
   return(list("datascreening" = screen,
               "model1" = model1,
               "model2" = model2,
+              "model2_low" = model2.1,
+              "model2_high" = model2.2,
               "model3" = model3,
               "model4" = model4,
               "total.effect" = total,
               "direct.effect" = direct,
-              "indirect.effect1" = indirect1,
+              "indirect.effect1_avg" = indirect1_avg,
+              "indirect.effect1_low" = indirect1_low,
+              "indirect.effect1_high" = indirect1_high,
               "indirect.effect2" = indirect2,
-              "indirect.effect3" = indirect3,
+              "indirect.effect3_avg" = indirect3_avg,
+              "indirect.effect3_low" = indirect3_low,
+              "indirect.effect3_high" = indirect3_high,
               "boot.results" = bootresults,
               "boot.ci" = bootci
   ))

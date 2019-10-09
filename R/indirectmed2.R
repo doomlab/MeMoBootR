@@ -57,7 +57,7 @@ indirectmed2 = function(formula2, formula3,
     indirect3 = a1*d21*b2
 
   } else {
-    indirect = NA
+    indirect = NA;indirect2 = NA; indirect3 = NA
     for (i in 1:length(levelsx)) {
       #relevant coefficients
       a1 = coef(model2)[levelsx[i]]

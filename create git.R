@@ -2,7 +2,7 @@
 install.packages("roxygen2")
 
 ##set working direction to create stuff
-setwd("~/Downloads")
+#setwd("~/Downloads")
 
 ##create the folder for everything
 devtools::create("MeMoBootR")

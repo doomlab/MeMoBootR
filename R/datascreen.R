@@ -21,7 +21,7 @@
 #'            df = mtcars, with_out = TRUE)
 #' @export
 
-datascreen = function(eq, df, with_out = T) {
+datascreen <- function(eq, df, with_out = T) {
 
   output = lm(eq, data = df)
 
