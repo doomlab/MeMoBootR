@@ -180,5 +180,5 @@ mediation2 = function(y, x, m1, m2, mod, cvs = NULL, df, with_out = T,
   ))
 }
 
-#' @rdname mediation2
+#' @rdname mediation2_moda
 #' @export
