@@ -29,13 +29,13 @@
 #' @export
 
 indirectmed2 = function(formula2, formula3,
-                        formula4, x, m1, m2, data, random) {
-  d = data[random, ] #randomize by row
+                        formula4, x, m1, m2, df, random) {
+  d = df[random, ] #randomize by row
 
   #figure out x categorical
-  if (is.factor(data[ , x])){
+  if (is.factor(df[ , x])){
     xcat = T
-    levelsx = paste(x, levels(data[, x])[-1], sep = "")
+    levelsx = paste(x, levels(df[, x])[-1], sep = "")
     } else { xcat = F }
 
   #run the models

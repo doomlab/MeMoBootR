@@ -27,3 +27,15 @@ saved <- mediation2_moda(y = "Y",
                          with_out = T,
                          nboot = 1000,
                          conf_level = .95)
+
+
+y = "Y"
+x = "X"
+m1 = "M1"
+m2 = "M2"
+mod = "W"
+cvs = NULL
+df = data1
+with_out = T
+nboot = 1000
+conf_level = .95

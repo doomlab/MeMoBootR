@@ -4,7 +4,7 @@
 \alias{indirectmed2}
 \title{Indirect Effect for Serial Mediation}
 \usage{
-indirectmed2(formula2, formula3, formula4, x, m1, m2, data, random)
+indirectmed2(formula2, formula3, formula4, x, m1, m2, df, random)
 }
 \arguments{
 \item{formula2}{The formula for mediation for the a1 path, usually
@@ -25,10 +25,10 @@ if the \code{createformula()} function is used.}
 
 \item{m2}{The column name for mediator 2 in the data frame.}
 
-\item{data}{The dataframe where the columns from the formula can be found.}
-
 \item{random}{This variable is used to denote the data frame will be
 randomize by row, as part of the \code{boot} library.}
+
+\item{data}{The dataframe where the columns from the formula can be found.}
 }
 \description{
 This function runs a serial mediation model with two mediators to calculate

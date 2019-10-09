@@ -20,7 +20,7 @@
 #'              cvs = c("drat", "gear"), type = "moderation1")
 #' @export
 
-createformula = function (y, x, m, m2 = NULL, mod = NULL, cvs = NULL, type){
+createformula <- function (y, x, m, m2 = NULL, mod = NULL, cvs = NULL, type){
 
   if (type == "mediation1") {
 

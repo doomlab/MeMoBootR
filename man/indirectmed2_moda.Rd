@@ -4,8 +4,7 @@
 \alias{indirectmed2_moda}
 \title{Indirect Effect for Serial Mediation and Moderator on Path A}
 \usage{
-indirectmed2_moda(formula2, formula3, formula4, x, m1, m2, mod, data,
-  random)
+indirectmed2_moda(formula2, formula3, formula4, x, m1, m2, mod, df, random)
 }
 \arguments{
 \item{formula2}{The formula for mediation for the a1 path, usually
@@ -29,10 +28,10 @@ also have a moderator for this model.}
 
 \item{mod}{The column name for the moderator in the data frame.}
 
-\item{data}{The dataframe where the columns from the formula can be found.}
-
 \item{random}{This variable is used to denote the data frame will be
 randomize by row, as part of the \code{boot} library.}
+
+\item{data}{The dataframe where the columns from the formula can be found.}
 }
 \description{
 This function runs a serial mediation model with two mediators to calculate
