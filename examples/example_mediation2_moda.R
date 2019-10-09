@@ -74,17 +74,23 @@ saved$indirect.effect3_high #x through m1 through m2 when w is high
 saved$boot.results
 
 #bootstrapped CI
-# need to give these better names
 saved$boot.ci
+#OR
+saved$boot.ci$XT.indirect1_avg #x through m1
+saved$boot.ci$XT.indirect1_low
+saved$boot.ci$XT.indirect1_high
+saved$boot.ci$XT.indirect2 #x through m2
+saved$boot.ci$XT.indirect3_avg #x through m1 and m2
+saved$boot.ci$XT.indirect3_low
+saved$boot.ci$XT.indirect3_high
 
 ##how do i know if mediation occurs ? if the CI does NOT include zero
-#all three indirects show mediation effects
 
 ####power####
 library(pwr)
 ##power runs on cohen's f - not to be confused with anova f.
 ##take the R squared to convert
-R2 =  .60
+R2 =  .52
 feta = R2 / (1-R2)
 
 #u is df model, which is number of predictors
