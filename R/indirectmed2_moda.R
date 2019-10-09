@@ -43,8 +43,8 @@ indirectmed2_moda <- function(formula2, formula3,
 
   #run the models
   model2 = lm(formula2, data = d)
-  model2.1 = lm(gsub(mod, "lowMod", allformulas$eq2), data = d)
-  model2.2 = lm(gsub(mod, "highMod", allformulas$eq2), data = d)
+  model2.1 = lm(gsub(mod, "lowMod", formula2), data = d)
+  model2.2 = lm(gsub(mod, "highMod", formula2), data = d)
   model3 = lm(formula3, data = d)
   model4 = lm(formula4, data = d)
 
