@@ -4,8 +4,17 @@
 \alias{mediation2}
 \title{Serial Mediation with Two Mediators}
 \usage{
-mediation2(y, x, m1, m2, cvs = NULL, df, with_out = T, nboot = 1000,
-  conf_level = 0.95)
+mediation2(
+  y,
+  x,
+  m1,
+  m2,
+  cvs = NULL,
+  df,
+  with_out = T,
+  nboot = 1000,
+  conf_level = 0.95
+)
 }
 \arguments{
 \item{y}{The dependent variable column name from your dataframe.}

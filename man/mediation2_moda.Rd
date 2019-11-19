@@ -4,8 +4,18 @@
 \alias{mediation2_moda}
 \title{Two Mediations with Moderation on Path A}
 \usage{
-mediation2_moda(y, x, m1, m2, mod, cvs = NULL, df, with_out = T,
-  nboot = 1000, conf_level = 0.95)
+mediation2_moda(
+  y,
+  x,
+  m1,
+  m2,
+  mod,
+  cvs = NULL,
+  df,
+  with_out = T,
+  nboot = 1000,
+  conf_level = 0.95
+)
 }
 \arguments{
 \item{y}{The dependent variable column name from your dataframe.}

@@ -79,7 +79,7 @@ mediation1.lme = function(y, x, m, cvs = NULL, df, with_out = T,
   b = coef(model3)[m]
   SEa = summary(model2)$coefficients[x,2]
   SEb = summary(model3)$coefficients[m,2]
-  zscore = (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
+  zscore = (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa^2*SEb^2)))
   pvalue = pnorm(abs(zscore), lower.tail = F)*2
 
   #reporting
@@ -101,7 +101,7 @@ mediation1.lme = function(y, x, m, cvs = NULL, df, with_out = T,
       b = coef(model3)[m]
       SEa = summary(model2)$coefficients[levelsx[i],2]
       SEb = summary(model3)$coefficients[m,2]
-      zscore[i] = (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa*SEb)))
+      zscore[i] = (a*b)/(sqrt((b^2*SEa^2)+(a^2*SEb^2)+(SEa^2*SEb^2)))
       pvalue[i] = pnorm(abs(zscore[i]), lower.tail = F)*2
 
       #reporting

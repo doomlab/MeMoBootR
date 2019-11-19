@@ -4,8 +4,16 @@
 \alias{mediation1}
 \title{Simple Mediation}
 \usage{
-mediation1(y, x, m, cvs = NULL, df, with_out = T, nboot = 1000,
-  conf_level = 0.95)
+mediation1(
+  y,
+  x,
+  m,
+  cvs = NULL,
+  df,
+  with_out = T,
+  nboot = 1000,
+  conf_level = 0.95
+)
 }
 \arguments{
 \item{y}{The dependent variable column name from your dataframe.}
