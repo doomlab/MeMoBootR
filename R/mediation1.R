@@ -20,6 +20,7 @@
 #' @param with_out A logical value where you want to keep the outliers in
 #' model \code{TRUE} or exclude them from the model \code{FALSE}.
 #' @param nboot A numeric value indicating the number of bootstraps you would like to complete.
+#' @param ci_type choose type of cis you want
 #' @param conf_level A numeric value indicating the confidence interval width for the boostrapped confidence interval.
 #' @keywords mediation, moderation, regression, data screening, bootstrapping
 #' @export
@@ -29,7 +30,7 @@
 #' @export
 
 mediation1 = function(y, x, m, cvs = NULL, df, with_out = T,
-                      nboot = 1000, conf_level = .95) {
+                      nboot = 1000, ci_type=c("norm", "basic", "perc", "stud"), conf_level = .95) {
 
   require(boot)
 
@@ -106,13 +107,13 @@ mediation1 = function(y, x, m, cvs = NULL, df, with_out = T,
   if (xcat == F) { #run this if X is continuous
   bootci = boot.ci(bootresults,
                    conf = conf_level,
-                   type = "norm")
+                   type = ci_type)
   } else {
     bootci = list()
     for (i in 1:length(levelsx)){
       bootci[[i]] = boot.ci(bootresults,
                           conf = conf_level,
-                          type = "norm",
+                          type = ci_type,
                           index = i)
       names(bootci)[[i]] = levelsx[[i]]
     } #close for loop
